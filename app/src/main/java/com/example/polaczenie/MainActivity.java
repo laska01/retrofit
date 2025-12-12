@@ -1,5 +1,6 @@
 package com.example.polaczenie;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -32,7 +33,10 @@ public class MainActivity extends AppCompatActivity {
      RadioButton radioButton_b;
      RadioButton radioButton_c;
      Button buttonDalej;
+     Button ButtonPodziel;
+
      int aktualnePytanie = 0;
+     int sumaPunktow = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
         radioButton_b = findViewById(R.id.radioButton2);
         radioButton_c = findViewById(R.id.radioButton3);
         buttonDalej = findViewById(R.id.buttonDalej);
+        ButtonPodziel = findViewById(R.id.buttonPodziel);
+
+
         //pobieramy dane z kad
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://my-json-server.typicode.com/laska01/polaczenie1/")
@@ -78,22 +85,37 @@ public class MainActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (aktualnePytanie < pytanias.size() - 1) {
+
                             if(sprawdzOdpowiedz(aktualnePytanie)){
                                 Toast.makeText(MainActivity.this, "dobrze", Toast.LENGTH_SHORT);
                             }
                             else {
                                 Toast.makeText(MainActivity.this, "zle", Toast.LENGTH_SHORT);
                             }
+                            if (aktualnePytanie < pytanias.size() - 1) {
                             aktualnePytanie++;
                             wyswietlPytanie(aktualnePytanie);
                         }else{
                             //TODO:koniec testu
                             //podliczanie punktow znika wszystko wysylamy wynik sms
                             radioGroup.setVisibility(view.INVISIBLE);
-                            textviewPytanie.setText("koniec testu");
+                            textviewPytanie.setText("koniec testu, punkty"+sumaPunktow);
                             buttonDalej.setVisibility(view.INVISIBLE);
+                            ButtonPodziel.setVisibility(view.VISIBLE);
                         }
+                    }
+                }
+        );
+        ButtonPodziel.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Intent intentWyslij = new Intent();
+                        intentWyslij.setAction(Intent.ACTION_SEND);
+                        intentWyslij.putExtra(Intent.EXTRA_TEXT,"otrzymano: "+sumaPunktow);
+                        intentWyslij.setType("text/plain");
+                        Intent intentUdostepniona = Intent.createChooser(intentWyslij, null);
+                        startActivity(intentUdostepniona);
                     }
                 }
         );
