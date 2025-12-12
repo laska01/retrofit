@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
                             return;
                         }
                         List<pytanie> pytania = response.body();
+                        Toast.makeText(MainActivity.this, pytania.get(0).getTrescPytania(), Toast.LENGTH_SHORT).show();
 
                     }
 
