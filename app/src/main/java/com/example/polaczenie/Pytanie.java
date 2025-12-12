@@ -2,7 +2,7 @@ package com.example.polaczenie;
 
 import com.google.gson.annotations.SerializedName;
 
-public class pytanie {
+public class Pytanie {
     @SerializedName("tresc")
     private String trescPytania;
     private String odpa;
@@ -10,7 +10,7 @@ public class pytanie {
     private String odpc;
     private int poprawna;
 
-    public pytanie(String trescPytania, String odpa, String odpb, String odpc, int poprawna) {
+    public Pytanie(String trescPytania, String odpa, String odpb, String odpc, int poprawna) {
         this.trescPytania = trescPytania;
         this.odpa = odpa;
         this.odpb = odpb;
